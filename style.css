@@ -1,0 +1,35 @@
+body {
+    background-color: #f8f9fa;
+}
+.product-card {
+    text-align: center;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: white;
+}
+
+.product-card img {
+    width: 100%;
+    height: 300px;
+    object-fit: contain;
+    border-radius: 10px;
+}
+
+.section-title {
+    margin-top: 20px;
+    font-weight: bold;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 5px;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        margin-bottom: 20px;
+        height: auto;
+    }
+
+    .product-card img {
+        height: 200px;
+    }
+}
