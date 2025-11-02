@@ -1,0 +1,7 @@
+# Ignorar dependencias de Composer (si usas)
+/vendor/
+
+# Ignorar configuraciones locales (si usas)
+.env
+.DS_Store
+*.log
