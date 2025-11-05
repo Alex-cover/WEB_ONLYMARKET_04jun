@@ -7,7 +7,7 @@
 
     $conn = mysqli_connect($host,$user, $pass, $name);
 
-    if($conn){
-        echo("EXITO AL CONECTAR A LA BASE DE DATOS DE DATOS");
+    if(!$conn){
+        echo("ERROR AL CONECTAR A LA BASE DE DATOS DE DATOS");
     }
 ?>

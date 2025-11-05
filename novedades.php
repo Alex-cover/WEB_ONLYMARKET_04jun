@@ -51,13 +51,28 @@ $usuario_logueado = isset($_SESSION['usuario']);
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item active">
-                    <a href="index.php" class="nav-link">Inicio <span class="sr-only"></span></a>
+                    <a href="index.php" class="nav-link">Inicio <span class="sr-only">(current)</span></a>
                 </li>
-
+                <li class="nav-item">
+                    <a href="#categoria" class="nav-link">Categorías</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" id="navbarDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">Descubre Nuestras</a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a href="ofertas.php" class="dropdown-item">Ofertas</a></li>
+                        <li><a href="novedades.php" class="dropdown-item">Novedades</a></li>
+                        <li><a href="sucursales2.php" class="dropdown-item">Sucursales</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a href="contacto.php" class="dropdown-item">Contactos</a></li>
+                    </ul>
+                </li>
                 <li class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" id="navbarDropdown" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
-                        <?php echo $usuario_logueado ? $_SESSION['usuario']['nombre'] : 'Cuenta'; ?>
+                        <?php echo $usuario_logueado ? htmlspecialchars($_SESSION['usuario']['nombre']) : 'Cuenta'; ?>
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <?php if ($usuario_logueado): ?>
@@ -74,19 +89,6 @@ $usuario_logueado = isset($_SESSION['usuario']);
                         <?php endif; ?>
                     </ul>
                 </li>
-                <li class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" id="navbarDropdown" role="button"
-                        data-bs-toggle="dropdown" aria-expanded="false">Cuenta</a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a type="button" data-bs-toggle="modal" data-bs-target="#loginModal" class="dropdown-item">Iniciar sesión</a></li>
-                        <!-- Botón para abrir el modal -->
-                        <!-- <button type="button" class="btn btn-white" data-bs-toggle="modal" data-bs-target="#loginModal">
-                    Iniciar Sesión
-                    </button> -->
-                        <li><a href="crear.php" class="dropdown-item">Crear cuenta</a></li>
-
-                    </ul>
-                </li>
             </ul>
             <form class="d-flex my-2 my-lg-0">
                 <input class="form-control me-2" type="search" placeholder="Buscar producto" aria-label="Search">
@@ -95,29 +97,30 @@ $usuario_logueado = isset($_SESSION['usuario']);
         </div>
     </nav>
     <!-- Modal -->
-    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content shadow">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="loginModalLabel">Iniciar Sesión</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="mb-3">
-                            <label for="login-email" class="form-label">Correo Electrónico</label>
-                            <input type="email" class="form-control" id="login-email" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="login-password" class="form-label">Contraseña</label>
-                            <input type="password" class="form-control" id="login-password" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">Iniciar Sesión</button>
-                    </form>
-                </div>
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content shadow">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginModalLabel">Iniciar Sesión</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <form action="control.php" method="POST">
+                    <div class="mb-3">
+                        <label for="login-email" class="form-label">Correo Electrónico</label>
+                        <input type="email" class="form-control" id="login-email" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="login-password" class="form-label">Contraseña</label>
+                        <input type="password" class="form-control" id="login-password" name="password" required>
+                    </div>
+                    <input type="hidden" name="action" value="login">
+                    <button type="submit" class="btn btn-success w-100">Iniciar Sesión</button>
+                </form>
             </div>
         </div>
     </div>
+</div>
     <div class="container mt-4">
         <div>
             <img src="imagenes_web/banner/bannernov1.png" class="card-img-top" alt="bann">

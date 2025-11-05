@@ -1,7 +1,6 @@
 <?php
 session_start();
 include "config.php";
-$usuario_logueado = isset($_SESSION['usuario']);
 
 // Verificar qué acción se está solicitando
 $action = $_POST['action'] ?? '';
@@ -34,7 +33,7 @@ function crearCuenta() {
     }
     
     // Verificar si el email ya existe
-    $check_email = "SELECT id_usuario FROM usuario WHERE email = '$email'";
+    $check_email = "SELECT id_usuario FROM usuarios WHERE email = '$email'";
     $result = mysqli_query($conn, $check_email);
     
     if (mysqli_num_rows($result) > 0) {
@@ -46,7 +45,7 @@ function crearCuenta() {
     }
     
     // Verificar si la cédula ya existe
-    $check_ci = "SELECT id_usuario FROM usuario WHERE ci = '$ci'";
+    $check_ci = "SELECT id_usuario FROM usuarios WHERE ci = '$ci'";
     $result = mysqli_query($conn, $check_ci);
     
     if (mysqli_num_rows($result) > 0) {
@@ -57,19 +56,19 @@ function crearCuenta() {
         exit();
     }
     
-    // Encriptar contraseña
-    $password_hash = password_hash($password, PASSWORD_DEFAULT);
+    // Encriptar contraseña con MD5
+    $password_md5 = md5($password);
     
-    // Insertar nuevo usuario - usando los nombres de campo de tu tabla
-    $sql = "INSERT INTO usuario (nombre, ci, email, contrasena) 
-            VALUES ('$nombre', '$ci', '$email', '$password_hash')";
+    // Insertar nuevo usuario
+    $sql = "INSERT INTO usuarios (nombre, ci, email, contrasena) 
+            VALUES ('$nombre', '$ci', '$email', '$password_md5')";
     
     if (mysqli_query($conn, $sql)) {
         // Obtener el ID del usuario recién insertado
         $user_id = mysqli_insert_id($conn);
         
         // Buscar los datos completos del usuario
-        $user_query = "SELECT * FROM usuario WHERE id_usuario = $user_id";
+        $user_query = "SELECT * FROM usuarios WHERE id_usuario = $user_id";
         $user_result = mysqli_query($conn, $user_query);
         $usuario = mysqli_fetch_assoc($user_result);
         
@@ -103,16 +102,18 @@ function login() {
         exit();
     }
     
-    // Buscar usuario por email - usando los nombres de campo de tu tabla
-    $sql = "SELECT * FROM usuario WHERE email = '$email'";
+    // Encriptar la contraseña ingresada con MD5 para comparar
+    $password_md5 = md5($password);
+    
+    // Buscar usuario por email
+    $sql = "SELECT * FROM usuarios WHERE email = '$email'";
     $result = mysqli_query($conn, $sql);
     
     if ($result && mysqli_num_rows($result) > 0) {
         $usuario = mysqli_fetch_assoc($result);
         
-        // Verificar contraseña - comparar con el campo 'contrasena' de tu tabla
-        // Si las contraseñas están en texto plano (como parece en tu ejemplo), no uses password_verify
-        if ($password === $usuario['contrasena']) {
+        // Verificar contraseña - comparar MD5
+        if ($password_md5 === $usuario['contrasena']) {
             // Contraseña correcta - iniciar sesión
             $_SESSION['usuario'] = $usuario;
             
